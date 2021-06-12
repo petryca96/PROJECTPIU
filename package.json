@@ -8,8 +8,12 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Babandeep Singh",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/babandeepsingh/create-react-bootstrap-boiler.git"
+  },
   "dependencies": {
     "bootstrap": "^5.0.1",
     "node-sass": "^6.0.0",
