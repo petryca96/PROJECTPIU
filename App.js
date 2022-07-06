@@ -30,14 +30,14 @@ export default function App() {
       headers: { "Content-Type": "application/json" },
       body: dateScript,
     };
-    //  Corectez in baza de date
+    
     fetch("http://localhost:80/masini.php", config).then(() => {
-      setModif(!modif); //  Modific variabila "modif", deci se declanseaza useEffect()
+      setModif(!modif); 
     });
   };
 
   const adaugaActiv = (elm) => {
-    elm.dcalend = new Date().toJSON().slice(0, 10); //  Adaug si data in baza, dar nu se foloseste
+    elm.dcalend = new Date().toJSON().slice(0, 10);
     const dateScript = JSON.stringify(elm);
     const config = {
       method: "INSERT",
@@ -50,7 +50,7 @@ export default function App() {
     });
   };
   const editActiv = (elm) => {
-    elm.dcalend = new Date().toJSON().slice(0, 10); //  Adaug si data in baza, dar nu se foloseste
+    elm.dcalend = new Date().toJSON().slice(0, 10);
     const dateScript = JSON.stringify(elm);
     const config = {
       method: "PATCH",
@@ -60,10 +60,10 @@ export default function App() {
 
     //  Corectez in baza de date
     fetch("http://localhost:80/masini.php", config).then(() => {
-      setModif(!modif); //  Modific variabila "modif", deci se declanseaza useEffect()
+      setModif(!modif); 
     });
 
-    //  Golesc obiectul "edit" din "state"
+   
     setEdit({
       id: 0,
       ora: "",
@@ -72,7 +72,7 @@ export default function App() {
       descriere: "",
     });
   };
-  //  Functia declansata de sel. butonului de edit. din "Activitate"
+ 
   const editeazaActiv = (id) => {
     var obiect = lista.find((item) => {
       return parseInt(item.id, 10) === parseInt(id, 10);
