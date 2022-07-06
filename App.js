@@ -58,7 +58,7 @@ export default function App() {
       body: dateScript,
     };
 
-    //  Corectez in baza de date
+   
     fetch("http://localhost:80/masini.php", config).then(() => {
       setModif(!modif); 
     });
