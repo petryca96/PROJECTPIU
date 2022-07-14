@@ -1,15 +1,165 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./style.css";
+import image from "./components/LOGO.jpg";
+import Formular from "./formular";
+import { Container, Nav, Navbar, NavDropdown } from "react-bootstrap";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import Disponibile from "./components/disponibile";
+import Program from "./program";
 
 export default function App() {
-    return (
-        <div>
-            <div className="container text-center">
-                <h1>Create-React-Bootstrap-App</h1>
-                <a className="btn btn-link mb-1 mt-1" target="_blank" href="https://getbootstrap.com/docs/5.0/getting-started/introduction">Visit bootstrap</a>
-                <h3>SCSS Customize</h3>
-                <p>Kindly visit main.scss and check the comments or visit <a className="btn-light" target="_blank" href="https://getbootstrap.com/docs/5.0/customize/sass/">SCSS Customize</a></p>
+  const [lista, setLista] = useState([]);
+  const [modif, setModif] = useState(false);
+  const [edit, setEdit] = useState({
+    id: 0,
+    ora: "",
+    titlu: "",
+    loc: "",
+    descriere: "",
+  });
+
+  useEffect(() => {
+    fetch("http://localhost:80/masini.php")
+      .then((rezultat) => rezultat.json())
+      .then((sirmasini) => setLista(sirmasini));
+  }, []);
+  const stergActiv = (id) => {
+    const dateScript = JSON.stringify({ id: parseInt(id, 10) });
+    const config = {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: dateScript,
+    };
+
+    fetch("http://localhost:80/masini.php", config).then(() => {
+      setModif(!modif);
+    });
+  };
+
+  const adaugaActiv = (elm) => {
+    elm.dcalend = new Date().toJSON().slice(0, 10);
+    const dateScript = JSON.stringify(elm);
+    const config = {
+      method: "INSERT",
+      headers: { "Content-Type": "application/json" },
+      body: dateScript,
+    };
+
+    fetch("http://localhost:80/masini.php", config).then(() => {
+      setModif(!modif);
+    });
+  };
+  const editActiv = (elm) => {
+    elm.dcalend = new Date().toJSON().slice(0, 10);
+    const dateScript = JSON.stringify(elm);
+    const config = {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: dateScript,
+    };
+
+    fetch("http://localhost:80/masini.php", config).then(() => {
+      setModif(!modif);
+    });
+
+    setEdit({
+      id: 0,
+      ora: "",
+      titlu: "",
+      loc: "",
+      descriere: "",
+    });
+  };
+
+  const editeazaActiv = (id) => {
+    var obiect = lista.find((item) => {
+      return parseInt(item.id, 10) === parseInt(id, 10);
+    });
+    if (obiect) {
+      setEdit({
+        id: obiect.id,
+        nume: obiect.nume,
+        prenume: obiect.prenume,
+        marca: obiect.marca,
+        descriere: obiect.descriere,
+      });
+    }
+  };
+
+  return (
+    <Router className="back">
+      <div className="App">
+        <Navbar
+          bg="info"
+          variant="dark"
+          sticky="top"
+          expand="lg"
+          collapseOnSelect
+        >
+          <Navbar.Brand>
+            <div class="mx-auto">
+              <img
+                src={image}
+                width="50px"
+                height="50px"
+                class="rounded-circle"
+              />
             </div>
-        </div>
-    );
+          </Navbar.Brand>
+          <Navbar.Toggle />
+          <Navbar.Collapse>
+            <Nav>
+              <NavDropdown title="Lista masini">
+                <div class="shadow-lg p-1 mb-3 bg-body rounded">
+                  <NavDropdown.Item as={Link} to={"/program"}>
+                    {" "}
+                    Inchiriate
+                  </NavDropdown.Item>
+                </div>
+                <div class="shadow-lg p-1 mb-3 bg-body rounded">
+                  <NavDropdown.Item as={Link} to={"components/disponibile"}>
+                    {" "}
+                    Disponibile
+                  </NavDropdown.Item>
+                </div>
+              </NavDropdown>
+
+              <Nav.Link as={Link} to={"components/about"}>
+                {" "}
+                Despre noi
+              </Nav.Link>
+            </Nav>
+          </Navbar.Collapse>
+        </Navbar>
+      </div>
+
+      <div className="content">
+        <Container>
+          <Routes>
+            <Route
+              path="/program"
+              element={
+                <Program
+                  adaugam={lista}
+                  sterge={stergActiv}
+                  editeaza={editeazaActiv}
+                />
+              }
+            />
+            <Route path="components/disponibile" element={<Disponibile />} />
+            <Route
+              path="formular"
+              element={
+                <Formular
+                  transmit={adaugaActiv}
+                  obedit={edit}
+                  editez={editActiv}
+                />
+              }
+            />
+          </Routes>
+        </Container>
+      </div>
+    </Router>
+  );
 }

@@ -1,3 +1,27 @@
-h1, p {
-    font-family: Lato;
-  }
+im {
+  padding-left: 200px;
+}
+
+h1,
+p {
+  font-family: Lato;
+  color: rgb(20, 19, 19);
+}
+
+.active {
+  color: rgb(8, 8, 6);
+  padding: 10px;
+}
+
+.inactive {
+  color: rgb(153, 14, 14);
+  padding: 10px;
+}
+
+.content {
+  padding: 12px;
+  height: 3000px;
+}
+back {
+  background-color: aqua;
+}
