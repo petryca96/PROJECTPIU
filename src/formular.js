@@ -16,7 +16,7 @@ const Formular = (props) => {
 
   const tratezSubmit = (evt) => {
     evt.preventDefault();
-    const adauga = { id, nume, prenume, marca, descriere };
+    const adauga = { nume, prenume, marca, descriere };
     props.transmit(adauga);
     setId("");
     setNume("");

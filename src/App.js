@@ -19,46 +19,49 @@ export default function App() {
   });
 
   useEffect(() => {
-    fetch("http://localhost:80/masini.php")
-      .then((rezultat) => rezultat.json())
-      .then((sirmasini) => setLista(sirmasini));
-  }, []);
+    fetch("http://localhost:80/masini/masini.php")
+      .then((rezultat) => rezultat.text())
+      .then((listae) => setLista(JSON.parse(listae)));
+  }, [modif]);
   const stergActiv = (id) => {
     const dateScript = JSON.stringify({ id: parseInt(id, 10) });
     const config = {
+      mode: "no-cors",
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
       body: dateScript,
     };
 
-    fetch("http://localhost:80/masini.php", config).then(() => {
+    fetch("http://localhost:80/masini/masini.php", config).then(() => {
       setModif(!modif);
     });
   };
 
   const adaugaActiv = (elm) => {
-    elm.dcalend = new Date().toJSON().slice(0, 10);
+    //elm.dcalend = new Date().toJSON().slice(0, 10);
     const dateScript = JSON.stringify(elm);
     const config = {
-      method: "INSERT",
+      mode: "no-cors",
+      method: "POST",
       headers: { "Content-Type": "application/json" },
       body: dateScript,
     };
 
-    fetch("http://localhost:80/masini.php", config).then(() => {
+    fetch("http://localhost:80/masini/masini.php", config).then(() => {
       setModif(!modif);
     });
   };
   const editActiv = (elm) => {
-    elm.dcalend = new Date().toJSON().slice(0, 10);
+    // elm.dcalend = new Date().toJSON().slice(0, 10);
     const dateScript = JSON.stringify(elm);
     const config = {
+      mode: "no-cors",
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: dateScript,
     };
 
-    fetch("http://localhost:80/masini.php", config).then(() => {
+    fetch("http://localhost:80/masini/masini.php", config).then(() => {
       setModif(!modif);
     });
 
@@ -87,7 +90,7 @@ export default function App() {
   };
 
   return (
-    <Router className="back">
+    <>
       <div className="App">
         <Navbar
           bg="info"
@@ -157,9 +160,13 @@ export default function App() {
                 />
               }
             />
+            <Route
+              path="/"
+              element={<h1 className="text-center"> Bun venit!</h1>}
+            />
           </Routes>
         </Container>
       </div>
-    </Router>
+    </>
   );
 }

@@ -6,12 +6,12 @@ const Program = (props) => {
   const lista = (adaugam || []).map((act) => {
     return (
       <Adauga
+        id={act.id}
         nume={act.nume}
         marca={act.marca}
         prenume={act.prenume}
         descriere={act.descriere}
         sterge={sterge}
-        id={act.id}
         editeaza={editeaza}
       />
     );
